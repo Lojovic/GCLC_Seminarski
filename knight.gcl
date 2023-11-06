@@ -1,0 +1,2978 @@
+point A 30 10
+point B 40 10
+point C 50 10
+point D 60 10
+point E 70 10
+point F 80 10
+point G 90 10
+point H 100 10
+point I 110 10
+point 1 30 10
+point 2 30 20
+point 3 30 30
+point 4 30 40
+point 5 30 50
+point 6 30 60
+point 7 30 70
+point 8 30 80
+point 9 30 90
+cmark_rb A
+cmark_rb B
+cmark_rb C
+cmark_rb D
+cmark_rb E
+cmark_rb F
+cmark_rb G
+cmark_rb H
+cmark_lt 1
+cmark_lt 2
+cmark_lt 3
+cmark_lt 4
+cmark_lt 5
+cmark_lt 6
+cmark_lt 7
+cmark_lt 8
+drawpoint A
+drawpoint B
+drawpoint C
+drawpoint D
+drawpoint E
+drawpoint F
+drawpoint G
+drawpoint H
+drawpoint I
+
+drawsegment A I
+
+number n 0
+while { n < 8 }
+{
+	expression A1x {30 + n*10}
+	point A1 A1x 10
+	expression A2x {30 + n*10}
+	point A2 A2x 90
+	drawsegment A1 A2
+
+	expression B1y {10 + n*10}
+	point B1 30 B1y
+	expression B2y {10 + n*10}
+	point B2 110 B2y
+	drawsegment B1 B2
+
+	number m 0
+	while { m < 8 }
+	{
+		expression BLx {30 + n*10}
+		expression BLy {10 + m*10}
+		expression TRx {40 + n*10}
+		expression TRy {20 + m*10}
+		if_then_else {abs(n-m) - (2 * floor(abs(n-m) / 2)) == 0}
+		{
+			color 118 150 86
+		}
+		{
+			color 238 238 210
+		}
+		point BL BLx BLy
+		point TR TRx TRy
+		fillrectangle  BL TR	
+		expression m { m+1 }
+	}
+	expression n {n+1}
+}
+
+
+point Knight_center 35 85
+
+procedure one_move { t x y x_diff y_diff}
+{
+	expression xx_new { x + t*x_diff }
+	expression yy_new { y + t*y_diff }
+	point Knight_center_new xx_new yy_new
+	expression y_edge_new { yy_new + 4 }
+	point Knight_edge_new  xx_new y_edge_new
+	circle Knight_new Knight_center_new Knight_edge_new
+	drawcircle Knight_new
+	fillcircle Knight_new	
+
+}
+
+procedure color_square { tl tr bl br x y }
+{
+	expression x_min_5 {x - 5}
+	expression y_min_5 {y - 5}
+	expression x_plus_5 {x + 5}
+	expression y_plus_5 {y + 5}
+
+	if_then_else { tl == 1 }
+	{
+		color 0 0 0 
+	}
+	{
+		color 255 255 255
+	}	
+	
+	point P1 x_min_5 y
+	point P2 x y_plus_5
+	fillrectangle P1 P2
+	
+	if_then_else { tr == 1}
+	{
+		color 0 0 0 
+	}
+	{
+		color 255 255 255
+	}	
+	
+	point P3 x y
+	point P4 x_plus_5 y_plus_5
+	fillrectangle P3 P4
+
+	if_then_else { bl == 1}
+	{
+		color 0 0 0 
+	}
+	{
+		color 255 255 255
+	}	
+	
+	point P5 x_min_5 y_min_5
+	point P6 x y
+	fillrectangle P5 P6
+
+	if_then_else { br == 1}
+	{
+		color 0 0 0 
+	}
+	{
+		color 255 255 255
+	}	
+	
+	point P7 x y_min_5
+	point P8 x_plus_5 y
+	fillrectangle P7 P8
+
+}
+
+number tl1 1
+number tr1 1
+number bl1 1
+number br1 1
+
+number tl0 0
+number tr0 0
+number bl0 0
+number br0 0
+
+
+
+
+color 255 0 0
+
+	getx x Knight_center
+	gety y Knight_center
+	
+	point Move 0 0 65 65
+	getx t Move
+	if_then_else { t < 1}
+	{
+		
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		color 255 0 0
+		call one_move {t x y 10 -20}
+		 
+	}
+	{
+	if_then_else { t < 2}
+	{	
+		expression new_t {t - 1}
+		expression new_x {x + 10}
+		expression new_y {y -20}
+		
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 20 10}
+	}
+	{
+	if_then_else { t < 3}
+	{	
+		expression new_t {t - 2}
+		expression new_x {x + 30}
+		expression new_y {y - 10}
+		
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75}
+		color 255 0 0 
+		call one_move { new_t new_x new_y -10 -20}
+	}
+	{
+	if_then_else { t < 4}
+	{	
+		expression new_t {t - 3}
+		expression new_x {x + 20}
+		expression new_y {y - 30}
+		
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55}
+		color 255 0 0 
+		call one_move { new_t new_x new_y -20 -10}
+	}
+	{
+	
+	if_then_else { t < 5}
+	{	
+		expression new_t {t - 4}
+		expression new_x {x}
+		expression new_y {y - 40}
+		
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 -20}
+	}
+	{
+	if_then_else { t < 6}
+	{	
+		expression new_t {t - 5}
+		expression new_x {x + 10}
+		expression new_y {y - 60}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 20 -10}
+
+	}
+	{
+	if_then_else { t < 7}
+	{	
+		expression new_t {t - 6}
+		expression new_x {x + 30}
+		expression new_y {y - 70}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15}
+		color 255 0 0 
+		call one_move { new_t new_x new_y -10 20}
+
+	}
+	{
+	if_then_else { t < 8}
+	{	
+		expression new_t {t - 7}
+		expression new_x {x + 20}
+		expression new_y {y - 50}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35}
+		color 255 0 0 
+		call one_move { new_t new_x new_y 20 10}
+
+	}
+	{
+	if_then_else { t < 9}
+	{	
+		expression new_t {t - 8}
+		expression new_x {x + 40}
+		expression new_y {y - 40}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45}
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 -20}
+ 
+	}
+	{
+	if_then_else { t < 10}
+	{	
+		expression new_t {t - 9}
+		expression new_x {x + 50}
+		expression new_y {y - 60}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25}
+		color 255 0 0 
+		call one_move { new_t new_x new_y 20 -10}
+
+	}
+	{
+	if_then_else { t < 11}
+	{	
+		expression new_t {t - 10}
+		expression new_x {x + 70}
+		expression new_y {y - 70}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		color 255 0 0 
+		call one_move { new_t new_x new_y -10 20}
+	}
+	{
+	if_then_else { t < 12}
+	{	
+		expression new_t {t - 11}
+		expression new_x {x + 60}
+		expression new_y {y - 50}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 20}
+
+	}
+	{
+	if_then_else { t < 13}
+	{	
+		expression new_t {t - 12}
+		expression new_x {x + 70}
+		expression new_y {y - 30}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 20}
+	}
+	{
+	if_then_else { t < 14}
+	{	
+		expression new_t {t - 13}
+		expression new_x {x + 60}
+		expression new_y {y - 10}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75}
+		color 255 0 0 
+		call one_move { new_t new_x new_y -20 -10}
+	}
+	{
+	if_then_else { t < 15}
+	{	
+		expression new_t {t - 14}
+		expression new_x {x + 40}
+		expression new_y {y - 20}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65}
+		color 255 0 0 
+		call one_move { new_t new_x new_y 10 20}
+
+	}
+	{
+	if_then_else { t < 16}
+	{	
+		expression new_t {t - 15}
+		expression new_x {x + 50}
+		expression new_y {y }
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 -20}
+
+	}
+	{
+	if_then_else { t < 17}
+	{	
+		expression new_t {t - 16}
+		expression new_x {x + 60}
+		expression new_y {y - 20}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 20}
+
+	}
+	{
+	if_then_else { t < 18}
+	{	
+		expression new_t {t - 17}
+		expression new_x {x + 70}
+		expression new_y {y}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -20 -10}
+
+	}
+	{
+	if_then_else { t < 19}
+	{	
+		expression new_t {t - 18}
+		expression new_x {x + 50}
+		expression new_y {y - 10}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		color 255 0 0 
+		call one_move { new_t new_x new_y -10 -20}
+
+	}
+	{
+	if_then_else { t < 20}
+	{	
+		expression new_t {t - 19}
+		expression new_x {x + 40}
+		expression new_y {y - 30}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		color 255 0 0 
+		call one_move { new_t new_x new_y 20 -10}
+
+	}
+	{
+	if_then_else { t < 21}
+	{	
+		expression new_t {t - 20}
+		expression new_x {x + 60}
+		expression new_y {y - 40}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 -20}
+
+	}
+	{
+	if_then_else { t < 22}
+	{	
+		expression new_t {t - 21}
+		expression new_x {x + 70}
+		expression new_y {y - 60}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -20 -10}
+
+	}
+	{
+	if_then_else { t < 23}
+	{	
+		expression new_t {t - 22}
+		expression new_x {x + 50}
+		expression new_y {y - 70}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 20}
+
+	}
+	{
+	if_then_else { t < 24}
+	{	
+		expression new_t {t - 23}
+		expression new_x {x + 40}
+		expression new_y {y - 50}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -20 10}
+
+	}
+	{
+	if_then_else { t < 25}
+	{	
+		expression new_t {t - 24}
+		expression new_x {x + 20}
+		expression new_y {y - 40}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45}
+		color 255 0 0 
+		call one_move { new_t new_x new_y 10 -20}
+
+	}
+	{
+	if_then_else { t < 26}
+	{	
+		expression new_t {t - 25}
+		expression new_x {x + 30}
+		expression new_y {y - 60}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -20 -10}
+
+	}
+	{
+	if_then_else { t < 27}
+	{	
+		expression new_t {t - 26}
+		expression new_x {x + 10}
+		expression new_y {y - 70}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 20}
+
+	}
+	{
+	if_then_else { t < 28}
+	{	
+		expression new_t {t - 27}
+		expression new_x {x }
+		expression new_y {y - 50}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 20}
+
+	}
+	{
+	if_then_else { t < 29}
+	{	
+		expression new_t {t - 28}
+		expression new_x {x + 10}
+		expression new_y {y - 30}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 20}
+
+	}
+	{
+	if_then_else { t < 30}
+	{	
+		expression new_t {t - 29}
+		expression new_x {x }
+		expression new_y {y - 10}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 20 10}
+
+	}
+	{
+	if_then_else { t < 31}
+	{	
+		expression new_t {t - 30}
+		expression new_x {x + 20}
+		expression new_y {y }
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 -20}
+
+	}
+	{
+	if_then_else { t < 32}
+	{	
+		expression new_t {t - 31}
+		expression new_x {x + 30}
+		expression new_y {y - 20}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 20}
+
+	}
+	{
+	if_then_else { t < 33}
+	{	
+		expression new_t {t - 32}
+		expression new_x {x + 40}
+		expression new_y {y }
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 -20}
+
+	}
+	{
+	if_then_else { t < 34}
+	{	
+		expression new_t {t - 33}
+		expression new_x {x + 50}
+		expression new_y {y - 20}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 20 10}
+
+	}
+	{
+	if_then_else { t < 35}
+	{	
+		expression new_t {t - 34}
+		expression new_x {x + 70}
+		expression new_y {y - 10}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 -20}
+
+	}
+	{
+	if_then_else { t < 36}
+	{	
+		expression new_t {t - 35}
+		expression new_x {x + 60}
+		expression new_y {y - 30}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 -20}
+
+	}
+	{
+	if_then_else { t < 37}
+	{	
+		expression new_t {t - 36}
+		expression new_x {x + 70}
+		expression new_y {y - 50}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 -20}
+
+	}
+	{
+	if_then_else { t < 38}
+	{	
+		expression new_t {t - 37}
+		expression new_x {x + 60}
+		expression new_y {y - 70}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -20 10}
+
+	}
+	{
+	if_then_else { t < 39}
+	{	
+		expression new_t {t - 38}
+		expression new_x {x + 40}
+		expression new_y {y - 60}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 20}
+
+	}
+	{
+	if_then_else { t < 40}
+	{	
+		expression new_t {t - 39}
+		expression new_x {x + 50}
+		expression new_y {y - 40}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -20 -10}
+
+	}
+	{
+	if_then_else { t < 41}
+	{	
+		expression new_t {t - 40}
+		expression new_x {x + 30}
+		expression new_y {y - 50}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 -20}
+
+	}
+	{
+	if_then_else { t < 42}
+	{	
+		expression new_t {t - 41}
+		expression new_x {x + 20}
+		expression new_y {y - 70}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -20 10}
+
+	}
+	{
+	if_then_else { t < 43}
+	{	
+		expression new_t {t - 42}
+		expression new_x {x}
+		expression new_y {y - 60}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 20}
+
+	}
+	{
+	if_then_else { t < 44}
+	{	
+		expression new_t {t - 43}
+		expression new_x {x + 10}
+		expression new_y {y - 40}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 20 10}
+
+	}
+	{
+	if_then_else { t < 45}
+	{	
+		expression new_t {t - 44}
+		expression new_x {x + 30}
+		expression new_y {y - 30}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 20}
+
+	}
+	{
+	if_then_else { t < 46}
+	{	
+		expression new_t {t - 45}
+		expression new_x {x + 20}
+		expression new_y {y - 10}
+		
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75}
+		color 255 0 0 
+		call one_move { new_t new_x new_y -20 -10}
+
+	}
+	{
+	if_then_else { t < 47}
+	{	
+		expression new_t {t - 46}
+		expression new_x {x}
+		expression new_y {y - 20}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 20}
+
+	}
+	{
+	if_then_else { t < 48}
+	{	
+		expression new_t {t - 47}
+		expression new_x {x + 10}
+		expression new_y {y }
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 -20}
+
+	}
+	{
+	if_then_else { t < 49}
+	{	
+		expression new_t {t - 48}
+		expression new_x {x + 20}
+		expression new_y {y - 20}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 20}
+
+	}
+	{
+	if_then_else { t < 50}
+	{	
+		expression new_t {t - 49}
+		expression new_x {x + 30}
+		expression new_y {y}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -20 -10}
+
+	}
+	{
+	if_then_else { t < 51}
+	{	
+		expression new_t {t - 50}
+		expression new_x {x + 10}
+		expression new_y {y - 10}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 -20}
+
+	}
+	{
+	if_then_else { t < 52}
+	{	
+		expression new_t {t - 51}
+		expression new_x {x}
+		expression new_y {y - 30}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 -20}
+
+	}
+	{
+	if_then_else { t < 53}
+	{	
+		expression new_t {t - 52}
+		expression new_x {x + 10}
+		expression new_y {y - 50}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 -20}
+
+	}
+	{
+	if_then_else { t < 54}
+	{	
+		expression new_t {t - 53}
+		expression new_x {x}
+		expression new_y {y - 70}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 20 10}
+
+	}
+	{
+	if_then_else { t < 55}
+	{	
+		expression new_t {t - 54}
+		expression new_x {x + 20}
+		expression new_y {y - 60}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		call color_square {tl0 tr0 bl1 br1 55 25} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 20}
+
+	}
+	{
+	if_then_else { t < 56}
+	{	
+		expression new_t {t - 55}
+		expression new_x {x + 30}
+		expression new_y {y - 40}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		call color_square {tl0 tr0 bl1 br1 55 25} 
+		call color_square {tl1 tr0 bl0 br1 65 45} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 20 -10}
+
+	}
+	{
+	if_then_else { t < 57}
+	{	
+		expression new_t {t - 56}
+		expression new_x {x + 50}
+		expression new_y {y - 50}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		call color_square {tl0 tr0 bl1 br1 55 25} 
+		call color_square {tl1 tr0 bl0 br1 65 45} 
+		call color_square {tl0 tr0 bl1 br1 85 35} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 -20}
+
+	}
+	{
+	if_then_else { t < 58}
+	{	
+		expression new_t {t - 57}
+		expression new_x {x + 40}
+		expression new_y {y - 70}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		call color_square {tl0 tr0 bl1 br1 55 25} 
+		call color_square {tl1 tr0 bl0 br1 65 45} 
+		call color_square {tl0 tr0 bl1 br1 85 35} 
+		call color_square {tl0 tr0 bl0 br0 75 15} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 20 10}
+
+	}
+	{
+	if_then_else { t < 59}
+	{	
+		expression new_t {t - 58}
+		expression new_x {x + 60}
+		expression new_y {y - 60}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		call color_square {tl0 tr0 bl1 br1 55 25} 
+		call color_square {tl1 tr0 bl0 br1 65 45} 
+		call color_square {tl0 tr0 bl1 br1 85 35} 
+		call color_square {tl0 tr0 bl0 br0 75 15} 
+		call color_square {tl1 tr0 bl1 br1 95 25} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 20}
+
+	}
+	{
+	if_then_else { t < 60}
+	{	
+		expression new_t {t - 59}
+		expression new_x {x + 70}
+		expression new_y {y - 40}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		call color_square {tl0 tr0 bl1 br1 55 25} 
+		call color_square {tl1 tr0 bl0 br1 65 45} 
+		call color_square {tl0 tr0 bl1 br1 85 35} 
+		call color_square {tl0 tr0 bl0 br0 75 15} 
+		call color_square {tl1 tr0 bl1 br1 95 25} 
+		call color_square {tl0 tr1 bl1 br0 105 45} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -20 10}
+
+	}
+	{
+	if_then_else { t < 61}
+	{	
+		expression new_t {t - 60}
+		expression new_x {x + 50}
+		expression new_y {y - 30}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		call color_square {tl0 tr0 bl1 br1 55 25} 
+		call color_square {tl1 tr0 bl0 br1 65 45} 
+		call color_square {tl0 tr0 bl1 br1 85 35} 
+		call color_square {tl0 tr0 bl0 br0 75 15} 
+		call color_square {tl1 tr0 bl1 br1 95 25} 
+		call color_square {tl0 tr1 bl1 br0 105 45} 
+		call color_square {tl1 tr0 bl0 br0 85 55} 
+		color 255 0 0
+		call one_move { new_t new_x new_y -10 20}
+
+	}
+	{
+	if_then_else { t < 62}
+	{	
+		expression new_t {t - 61}
+		expression new_x {x + 40}
+		expression new_y {y - 10}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		call color_square {tl0 tr0 bl1 br1 55 25} 
+		call color_square {tl1 tr0 bl0 br1 65 45} 
+		call color_square {tl0 tr0 bl1 br1 85 35} 
+		call color_square {tl0 tr0 bl0 br0 75 15} 
+		call color_square {tl1 tr0 bl1 br1 95 25} 
+		call color_square {tl0 tr1 bl1 br0 105 45} 
+		call color_square {tl1 tr0 bl0 br0 85 55} 
+		call color_square {tl0 tr1 bl0 br0 75 75}
+		color 255 0 0
+		call one_move { new_t new_x new_y 20 10}
+
+	}
+	{
+	if_then_else { t < 63}
+	{	
+		expression new_t {t - 62}
+		expression new_x {x + 60}
+		expression new_y {y }
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		call color_square {tl0 tr0 bl1 br1 55 25} 
+		call color_square {tl1 tr0 bl0 br1 65 45} 
+		call color_square {tl0 tr0 bl1 br1 85 35} 
+		call color_square {tl0 tr0 bl0 br0 75 15} 
+		call color_square {tl1 tr0 bl1 br1 95 25} 
+		call color_square {tl0 tr1 bl1 br0 105 45} 
+		call color_square {tl1 tr0 bl0 br0 85 55} 
+		call color_square {tl0 tr1 bl0 br0 75 75}
+		call color_square {tl1 tr1 bl1 br1 95 85} 
+		color 255 0 0
+		call one_move { new_t new_x new_y 10 -20}
+
+	}
+	{
+	if_then_else { t < 64 }
+	{
+		expression new_t {t - 63}
+		expression new_x {x + 70}
+		expression new_y {y - 20}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		call color_square {tl0 tr0 bl1 br1 55 25} 
+		call color_square {tl1 tr0 bl0 br1 65 45} 
+		call color_square {tl0 tr0 bl1 br1 85 35} 
+		call color_square {tl0 tr0 bl0 br0 75 15} 
+		call color_square {tl1 tr0 bl1 br1 95 25} 
+		call color_square {tl0 tr1 bl1 br0 105 45} 
+		call color_square {tl1 tr0 bl0 br0 85 55} 
+		call color_square {tl0 tr1 bl0 br0 75 75}
+		call color_square {tl1 tr1 bl1 br1 95 85}
+		call color_square {tl1 tr1 bl1 br1 105 65} 
+		color 255 0 0
+		call one_move {new_t new_x new_y -25 -5}
+		
+
+	}
+	{
+	if_then_else {t <= 65}
+	{
+		expression new_t {t - 64}
+		expression new_x {x + 45}
+		expression new_y {y - 25}
+		call color_square { tl1 tr1 bl1 br1 35 85 }
+		call color_square {tl0 tr1 bl1 br0 45 65} 
+		call color_square {tl0 tr1 bl0 br0 65 75} 
+		call color_square {tl0 tr0 bl0 br0 55 55} 		
+		call color_square {tl0 tr1 bl0 br1 35 45} 
+		call color_square {tl1 tr0 bl1 br1 45 25} 
+		call color_square {tl0 tr0 bl0 br0 65 15} 
+		call color_square {tl0 tr0 bl0 br0 55 35} 
+		call color_square {tl0 tr0 bl0 br0 75 45} 
+		call color_square {tl1 tr1 bl1 br1 85 25} 
+		call color_square {tl1 tr1 bl1 br1 105 15}
+		call color_square {tl0 tr0 bl1 br0 95 35} 
+		call color_square {tl1 tr1 bl1 br1 105 55}
+		call color_square {tl1 tr1 bl1 br1 95 75} 
+		call color_square {tl0 tr0 bl0 br1 75 65} 
+		call color_square {tl1 tr1 bl1 br1 85 85} 
+		call color_square {tl1 tr1 bl1 br1 95 65} 
+		call color_square {tl1 tr1 bl1 br1 105 85}
+		call color_square {tl1 tr1 bl1 br1 85 75} 
+		call color_square {tl0 tr1 bl0 br0 75 55} 
+		call color_square {tl0 tr0 bl0 br0 95 45} 
+		call color_square {tl0 tr1 bl1 br1 105 25}
+		call color_square {tl0 tr0 bl0 br0 85 15} 
+		call color_square {tl1 tr0 bl1 br1 75 35} 
+		call color_square {tl0 tr0 bl0 br0 55 45} 
+		call color_square {tl0 tr0 bl1 br1 65 25} 
+		call color_square {tl0 tr0 bl0 br0 45 15} 
+		call color_square {tl0 tr1 bl0 br1 35 35} 
+		call color_square {tl0 tr0 bl0 br0 45 55}
+		call color_square {tl1 tr1 bl1 br1 35 75}
+		call color_square {tl1 tr1 bl1 br1 55 85}
+		call color_square {tl0 tr0 bl0 br0 65 65}
+		call color_square {tl0 tr1 bl0 br1 75 85}
+		call color_square {tl0 tr1 bl1 br0 85 65}
+		call color_square {tl1 tr1 bl1 br1 105 75}
+		call color_square {tl0 tr1 bl0 br0 95 55} 
+		call color_square {tl0 tr0 bl0 br0 105 35}
+		call color_square {tl1 tr1 bl0 br1 95 15} 
+		call color_square {tl0 tr0 bl1 br1 75 25} 
+		call color_square {tl0 tr0 bl0 br0 85 45} 
+		call color_square {tl0 tr1 bl0 br0 65 35} 
+		call color_square {tl0 tr0 bl0 br0 55 15} 
+		call color_square {tl1 tr0 bl1 br1 35 25} 
+		call color_square {tl0 tr0 bl0 br0 45 45} 
+		call color_square {tl0 tr1 bl1 br0 65 55} 
+		call color_square {tl0 tr0 bl1 br0 55 75} 
+		call color_square {tl1 tr1 bl1 br0 35 65} 
+		call color_square {tl1 tr1 bl1 br1 45 85} 
+		call color_square {tl0 tr0 bl0 br0 55 65} 
+		call color_square {tl1 tr1 bl1 br0 65 85} 
+		call color_square {tl1 tr1 bl1 br0 45 75} 
+		call color_square {tl0 tr1 bl0 br1 35 55} 
+		call color_square {tl0 tr0 bl0 br0 45 35} 
+		call color_square {tl1 tr0 bl0 br0 35 15} 
+		call color_square {tl0 tr0 bl1 br1 55 25} 
+		call color_square {tl1 tr0 bl0 br1 65 45} 
+		call color_square {tl0 tr0 bl1 br1 85 35} 
+		call color_square {tl0 tr0 bl0 br0 75 15} 
+		call color_square {tl1 tr0 bl1 br1 95 25} 
+		call color_square {tl0 tr1 bl1 br0 105 45} 
+		call color_square {tl1 tr0 bl0 br0 85 55} 
+		call color_square {tl0 tr1 bl0 br0 75 75}
+		call color_square {tl1 tr1 bl1 br1 95 85}
+		call color_square {tl1 tr1 bl1 br1 105 65} 
+		color 248 194 23
+		call one_move {new_t new_x new_y 0 0}
+	}
+	{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+
+	}
+	
+
+animation_frames 720 40
+
+
+
+
+
+
